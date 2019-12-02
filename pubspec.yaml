@@ -1,6 +1,6 @@
 name: flutter_arc_text
-description: Flutter widget that renders text along the arc.
-version: 0.1.1
+description: Flutter widget that renders text along the arc with configurable radius.
+version: 0.1.2
 author: Kirill Bubochkin <ookami.kb@gmail.com>
 homepage: https://github.com/ookami-kb/flutter_arc_text
 
