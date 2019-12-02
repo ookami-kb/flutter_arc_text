@@ -26,13 +26,13 @@ class ArcText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CustomPaint(
-    painter: _Painter(
-      radius,
-      text,
-      textStyle,
-      initialAngle: startAngle,
-    ),
-  );
+        painter: _Painter(
+          radius,
+          text,
+          textStyle,
+          initialAngle: startAngle,
+        ),
+      );
 }
 
 class _Painter extends CustomPainter {
