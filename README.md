@@ -1,3 +1,5 @@
+[![](https://img.shields.io/pub/v/flutter_arc_text)](https://pub.dev/packages/flutter_arc_text)
+
 # Flutter Arc Text
 
 Renders text along the arc.
