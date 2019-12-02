@@ -2,7 +2,7 @@
 
 Renders text along the arc.
 
-![](screenshot.png)
+![](screenshot_sm.png)
 
 ## Basic usage
 
