@@ -2,6 +2,8 @@
 
 Renders text along the arc.
 
+![](screenshot.png)
+
 ## Basic usage
 
 ```dart

@@ -2,7 +2,7 @@ name: flutter_arc_text
 description: A new Flutter project.
 version: 0.1.0
 author: Kirill Bubochkin
-homepage:
+homepage: https://github.com/ookami-kb/flutter_arc_text
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
