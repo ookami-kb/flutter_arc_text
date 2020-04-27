@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
         text: 'Hello, Flutter!',
         textStyle: TextStyle(fontSize: 18, color: Colors.black),
         startAngle: -pi / 2,
+        startAngleAlignment: StartAngleAlignment.start,
       );
 }
 ```
