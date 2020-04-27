@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+enum StartAngleAlignment { start, center, end }
+
 class ArcText extends StatelessWidget {
   const ArcText({
     Key key,
@@ -10,6 +12,7 @@ class ArcText extends StatelessWidget {
     @required this.text,
     @required this.textStyle,
     this.startAngle = 0,
+    this.startAngleAlignment = StartAngleAlignment.start,
   }) : super(key: key);
 
   /// Radius of the arc along which the text will be drawn.
@@ -24,13 +27,40 @@ class ArcText extends StatelessWidget {
   /// Initial angle (0 is top center, positive angle is clockwise).
   final double startAngle;
 
+  /// Text alignment around [startAngle]
+  /// [StartAngleAlignment.start] text will starts from [startAngle]
+  /// [StartAngleAlignment.center] text will be centered on [startAngle]
+  /// [StartAngleAlignment.end] text will ends on [startAngle]
+  final StartAngleAlignment startAngleAlignment;
+
+  double _textAngle() {
+    if (startAngleAlignment == StartAngleAlignment.start) {
+      return startAngle;
+    }
+    var textPainter = TextPainter(textDirection: TextDirection.ltr);
+    var angle = 0.0;
+    for (String letter in text.split("")) {
+      textPainter.text = TextSpan(text: letter, style: textStyle);
+      textPainter.layout(
+        minWidth: 0,
+        maxWidth: double.maxFinite,
+      );
+      angle += 2 * math.asin(textPainter.width / (2 * radius));
+    }
+    if (startAngleAlignment == StartAngleAlignment.center) {
+      return startAngle - angle / 2;
+    }
+    // startAngleAlignment == StartAngleAlignment.end
+    return startAngle - angle;
+  }
+
   @override
   Widget build(BuildContext context) => CustomPaint(
         painter: _Painter(
           radius,
           text,
           textStyle,
-          initialAngle: startAngle,
+          initialAngle: _textAngle(),
         ),
       );
 }

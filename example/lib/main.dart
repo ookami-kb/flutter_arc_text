@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
                     'I am ArcText widget. I can draw circular text.',
                 textStyle: TextStyle(fontSize: 18, color: Colors.black),
                 startAngle: -pi / 2,
+                startAngleAlignment: StartAngleAlignment.start,
               ),
             ),
           ),
