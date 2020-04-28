@@ -1,3 +1,6 @@
+## [0.1.3]
+* Add StartAngleAlignment
+
 ## [0.1.2]
 * Update description to make pub analyzer happy
 
