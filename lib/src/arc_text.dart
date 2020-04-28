@@ -84,6 +84,7 @@ class _Painter extends CustomPainter {
       case StartAngleAlignment.end:
         return -_getFinalAngle();
     }
+    throw ArgumentError('Unknown type: $alignment');
   }
 
   /// Calculates final angle the canvas will be rotated after all the text
