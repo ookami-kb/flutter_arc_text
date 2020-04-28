@@ -27,10 +27,11 @@ class ArcText extends StatelessWidget {
   /// Initial angle (0 is top center, positive angle is clockwise).
   final double startAngle;
 
-  /// Text alignment around [startAngle]
-  /// [StartAngleAlignment.start] text will start from [startAngle]
-  /// [StartAngleAlignment.center] text will be centered on [startAngle]
-  /// [StartAngleAlignment.end] text will end on [startAngle]
+  /// Text alignment around [startAngle].
+  ///
+  /// - [StartAngleAlignment.start] – text will start from [startAngle]
+  /// - [StartAngleAlignment.center] – text will be centered on [startAngle]
+  /// - [StartAngleAlignment.end] – text will end on [startAngle]
   final StartAngleAlignment startAngleAlignment;
 
   @override
