@@ -13,6 +13,7 @@ class ArcText extends StatelessWidget {
     @required this.textStyle,
     this.startAngle = 0,
     this.startAngleAlignment = StartAngleAlignment.start,
+    this.clockwise = true,
   }) : super(key: key);
 
   /// Radius of the arc along which the text will be drawn.
@@ -34,6 +35,9 @@ class ArcText extends StatelessWidget {
   /// - [StartAngleAlignment.end] – text will end on [startAngle]
   final StartAngleAlignment startAngleAlignment;
 
+  /// Text direction
+  final bool clockwise;
+
   @override
   Widget build(BuildContext context) => CustomPaint(
         painter: _Painter(
@@ -42,6 +46,7 @@ class ArcText extends StatelessWidget {
           textStyle,
           startAngleAlignment,
           startAngle,
+          clockwise,
         ),
       );
 }
@@ -53,6 +58,7 @@ class _Painter extends CustomPainter {
     this.textStyle,
     this.alignment,
     this.initialAngle,
+    this.clockwise,
   );
 
   final num radius;
@@ -60,20 +66,18 @@ class _Painter extends CustomPainter {
   final double initialAngle;
   final TextStyle textStyle;
   final StartAngleAlignment alignment;
+  final bool clockwise;
 
   final _textPainter = TextPainter(textDirection: TextDirection.ltr);
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.translate(size.width / 2, size.height / 2 - radius);
+    canvas.translate(size.width / 2, size.height / 2);
 
-    final angleWithAlignment = initialAngle + _getAlignmentOffset();
-    if (angleWithAlignment != 0) {
-      final d = 2 * radius * math.sin(angleWithAlignment / 2);
-      canvas.rotate(angleWithAlignment / 2);
-      canvas.translate(d, 0);
-    }
-    _drawText(canvas, angleWithAlignment);
+    final angleWithAlignment = clockwise ? initialAngle + _getAlignmentOffset()
+        : initialAngle + math.pi - _getAlignmentOffset();
+    canvas.rotate(angleWithAlignment);
+    _drawText(canvas);
   }
 
   double _getAlignmentOffset() {
@@ -99,14 +103,15 @@ class _Painter extends CustomPainter {
     return finalRotation;
   }
 
-  void _drawText(Canvas canvas, double initialAngle) {
-    double angle = initialAngle;
+  void _drawText(Canvas canvas) {
     for (int i = 0; i < text.length; i++) {
       final translation = _getTranslation(text[i]);
-      canvas.rotate((angle + translation.alpha) / 2);
-      _textPainter.paint(canvas, Offset(0, -_textPainter.height));
-      canvas.translate(translation.d, 0);
-      angle = translation.alpha;
+      final halfAngleOffset = translation.alpha / 2 * (clockwise ? 1 : -1);
+      canvas.rotate(halfAngleOffset);
+      _textPainter.paint(canvas,
+          Offset(-translation.d / 2,
+              clockwise ? -radius -_textPainter.height : radius));
+      canvas.rotate(halfAngleOffset);
     }
   }
 
