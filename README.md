@@ -17,6 +17,8 @@ class MyApp extends StatelessWidget {
         textStyle: TextStyle(fontSize: 18, color: Colors.black),
         startAngle: -pi / 2,
         startAngleAlignment: StartAngleAlignment.start,
+        placement: Placement.outside,
+        direction: Direction.clockwise
       );
 }
 ```
