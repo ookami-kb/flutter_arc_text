@@ -1,3 +1,7 @@
+## [0.1.4]
+* Add Placement and Direction
+* Extract `ArcTextPainter`
+
 ## [0.1.3]
 * Add StartAngleAlignment
 
