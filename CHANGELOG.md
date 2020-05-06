@@ -1,3 +1,6 @@
+## [0.2.0]
+* Hide parameters
+
 ## [0.1.4]
 * Add Placement and Direction
 * Extract `ArcTextPainter`

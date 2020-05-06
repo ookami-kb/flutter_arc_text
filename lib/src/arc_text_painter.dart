@@ -7,8 +7,8 @@ import 'package:flutter_arc_text/src/enums.dart';
 class ArcTextPainter {
   ArcTextPainter({
     @required num radius,
-    @required this.text,
-    @required this.textStyle,
+    @required String text,
+    @required textStyle,
     StartAngleAlignment alignment = StartAngleAlignment.start,
     double initialAngle = 0,
     Direction direction = Direction.clockwise,
@@ -19,49 +19,63 @@ class ArcTextPainter {
         assert(alignment != null, 'alignment should not be null'),
         assert(initialAngle != null, 'initialAngle should not be null'),
         assert(direction != null, 'direction should not be null'),
-        assert(placement != null, 'placement should not be null') {
-    _textPainter.text = TextSpan(text: text, style: textStyle);
+        assert(placement != null, 'placement should not be null'),
+        this._text = text,
+        this._textStyle = textStyle {
+    _textPainter.text = TextSpan(text: _text, style: textStyle);
     _textPainter.layout(minWidth: 0, maxWidth: double.maxFinite);
 
     switch (placement) {
       case Placement.inside:
-        this.radius = radius;
+        this._radius = radius;
         break;
       case Placement.outside:
-        this.radius = radius + _textPainter.height;
+        this._radius = radius + _textPainter.height;
         break;
     }
 
     switch (direction) {
       case Direction.clockwise:
-        angleWithAlignment = initialAngle + _getAlignmentOffset(alignment);
-        angleMultiplier = 1;
-        heightOffset = -this.radius;
+        _angleWithAlignment = initialAngle + _getAlignmentOffset(alignment);
+        _angleMultiplier = 1;
+        _heightOffset = -this._radius;
         break;
       case Direction.counterClockwise:
-        angleWithAlignment =
+        _angleWithAlignment =
             initialAngle - _getAlignmentOffset(alignment) + math.pi;
-        angleMultiplier = -1;
-        heightOffset = this.radius - _textPainter.height;
+        _angleMultiplier = -1;
+        _heightOffset = this._radius - _textPainter.height;
         break;
     }
   }
 
-  final String text;
-  final TextStyle textStyle;
-  num radius;
-  int angleMultiplier;
-  double heightOffset;
-  double angleWithAlignment;
+  final String _text;
+  final TextStyle _textStyle;
+  num _radius;
+  int _angleMultiplier;
+  double _heightOffset;
+  double _angleWithAlignment;
 
   final _textPainter = TextPainter(textDirection: TextDirection.ltr);
 
+  /// Call this method whenever the text needs to be repainted.
   void paint(Canvas canvas, Size size) {
     canvas.save();
     canvas.translate(size.width / 2, size.height / 2);
-    canvas.rotate(angleWithAlignment);
-    _drawText(canvas, angleMultiplier, heightOffset);
+    canvas.rotate(_angleWithAlignment);
+    _drawText(canvas, _angleMultiplier, _heightOffset);
     canvas.restore();
+  }
+
+  /// Calculates final angle the canvas will be rotated after all the text
+  /// is drawn.
+  double getFinalAngle() {
+    double finalRotation = 0;
+    for (int i = 0; i < _text.length; i++) {
+      final translation = _getTranslation(_text[i]);
+      finalRotation += translation.alpha;
+    }
+    return finalRotation;
   }
 
   double _getAlignmentOffset(StartAngleAlignment alignment) {
@@ -76,20 +90,9 @@ class ArcTextPainter {
     throw ArgumentError('Unknown type: $alignment');
   }
 
-  /// Calculates final angle the canvas will be rotated after all the text
-  /// is drawn.
-  double getFinalAngle() {
-    double finalRotation = 0;
-    for (int i = 0; i < text.length; i++) {
-      final translation = _getTranslation(text[i]);
-      finalRotation += translation.alpha;
-    }
-    return finalRotation;
-  }
-
   void _drawText(Canvas canvas, int angleMultiplier, double heightOffset) {
-    for (int i = 0; i < text.length; i++) {
-      final translation = _getTranslation(text[i]);
+    for (int i = 0; i < _text.length; i++) {
+      final translation = _getTranslation(_text[i]);
       final halfAngleOffset = translation.alpha / 2 * angleMultiplier;
       canvas.rotate(halfAngleOffset);
       _textPainter.paint(canvas, Offset(-translation.d / 2, heightOffset));
@@ -99,11 +102,11 @@ class ArcTextPainter {
 
   /// Calculates width and central angle for the provided [letter].
   LetterTranslation _getTranslation(String letter) {
-    _textPainter.text = TextSpan(text: letter, style: textStyle);
+    _textPainter.text = TextSpan(text: letter, style: _textStyle);
     _textPainter.layout(minWidth: 0, maxWidth: double.maxFinite);
 
     final double d = _textPainter.width;
-    final double alpha = 2 * math.asin(d / (2 * radius));
+    final double alpha = 2 * math.asin(d / (2 * _radius));
     return LetterTranslation(d, alpha);
   }
 }
