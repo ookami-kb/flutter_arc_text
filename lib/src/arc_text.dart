@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 enum StartAngleAlignment { start, center, end }
+enum Direction { clockwise, counterClockwise }
+enum Placement { inside, outside }
 
 class ArcText extends StatelessWidget {
   const ArcText({
@@ -13,6 +15,8 @@ class ArcText extends StatelessWidget {
     @required this.textStyle,
     this.startAngle = 0,
     this.startAngleAlignment = StartAngleAlignment.start,
+    this.direction = Direction.clockwise,
+    this.placement = Placement.outside,
   }) : super(key: key);
 
   /// Radius of the arc along which the text will be drawn.
@@ -29,54 +33,87 @@ class ArcText extends StatelessWidget {
 
   /// Text alignment around [startAngle].
   ///
-  /// - [StartAngleAlignment.start] – text will start from [startAngle]
-  /// - [StartAngleAlignment.center] – text will be centered on [startAngle]
-  /// - [StartAngleAlignment.end] – text will end on [startAngle]
+  /// - [StartAngleAlignment.start] – text will start from [startAngle].
+  /// - [StartAngleAlignment.center] – text will be centered on [startAngle].
+  /// - [StartAngleAlignment.end] – text will end on [startAngle].
   final StartAngleAlignment startAngleAlignment;
+
+  /// Text direction.
+  final Direction direction;
+
+  /// Text placement relative to circle with the same [radius].
+  final Placement placement;
 
   @override
   Widget build(BuildContext context) => CustomPaint(
         painter: _Painter(
-          radius,
-          text,
-          textStyle,
-          startAngleAlignment,
-          startAngle,
+          radius: radius,
+          text: text,
+          textStyle: textStyle,
+          alignment: startAngleAlignment,
+          initialAngle: startAngle,
+          direction: direction,
+          placement: placement,
         ),
       );
 }
 
 class _Painter extends CustomPainter {
-  _Painter(
-    this.radius,
-    this.text,
-    this.textStyle,
-    this.alignment,
-    this.initialAngle,
-  );
+  _Painter({
+    @required num radius,
+    @required this.text,
+    @required this.textStyle,
+    @required StartAngleAlignment alignment,
+    @required double initialAngle,
+    @required Direction direction,
+    @required Placement placement,
+  }) {
+    _textPainter.text = TextSpan(text: text, style: textStyle);
+    _textPainter.layout(minWidth: 0, maxWidth: double.maxFinite);
 
-  final num radius;
+    switch (placement) {
+      case Placement.inside:
+        this.radius = radius;
+        break;
+      case Placement.outside:
+        this.radius = radius + _textPainter.height;
+        break;
+    }
+
+    switch (direction) {
+      case Direction.clockwise:
+        angleWithAlignment = initialAngle + _getAlignmentOffset(alignment);
+        angleMultiplier = 1;
+        heightOffset = -this.radius;
+        break;
+      case Direction.counterClockwise:
+        angleWithAlignment =
+            initialAngle - _getAlignmentOffset(alignment) + math.pi;
+        angleMultiplier = -1;
+        heightOffset = this.radius - _textPainter.height;
+        break;
+    }
+  }
+
   final String text;
-  final double initialAngle;
   final TextStyle textStyle;
-  final StartAngleAlignment alignment;
+  num radius;
+  int angleMultiplier;
+  double heightOffset;
+  double angleWithAlignment;
 
   final _textPainter = TextPainter(textDirection: TextDirection.ltr);
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.translate(size.width / 2, size.height / 2 - radius);
-
-    final angleWithAlignment = initialAngle + _getAlignmentOffset();
-    if (angleWithAlignment != 0) {
-      final d = 2 * radius * math.sin(angleWithAlignment / 2);
-      canvas.rotate(angleWithAlignment / 2);
-      canvas.translate(d, 0);
-    }
-    _drawText(canvas, angleWithAlignment);
+    canvas.save();
+    canvas.translate(size.width / 2, size.height / 2);
+    canvas.rotate(angleWithAlignment);
+    _drawText(canvas, angleMultiplier, heightOffset);
+    canvas.restore();
   }
 
-  double _getAlignmentOffset() {
+  double _getAlignmentOffset(StartAngleAlignment alignment) {
     switch (alignment) {
       case StartAngleAlignment.start:
         return 0;
@@ -99,14 +136,13 @@ class _Painter extends CustomPainter {
     return finalRotation;
   }
 
-  void _drawText(Canvas canvas, double initialAngle) {
-    double angle = initialAngle;
+  void _drawText(Canvas canvas, int angleMultiplier, double heightOffset) {
     for (int i = 0; i < text.length; i++) {
       final translation = _getTranslation(text[i]);
-      canvas.rotate((angle + translation.alpha) / 2);
-      _textPainter.paint(canvas, Offset(0, -_textPainter.height));
-      canvas.translate(translation.d, 0);
-      angle = translation.alpha;
+      final halfAngleOffset = translation.alpha / 2 * angleMultiplier;
+      canvas.rotate(halfAngleOffset);
+      _textPainter.paint(canvas, Offset(-translation.d / 2, heightOffset));
+      canvas.rotate(halfAngleOffset);
     }
   }
 
