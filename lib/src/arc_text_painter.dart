@@ -59,9 +59,11 @@ class ArcTextPainter {
   final _textPainter = TextPainter(textDirection: TextDirection.ltr);
 
   /// Call this method whenever the text needs to be repainted.
-  void paint(Canvas canvas, Size size) {
+  ///
+  /// Center of the arc will be in [offset] position.
+  void paint(Canvas canvas, [Offset offset = Offset.zero]) {
     canvas.save();
-    canvas.translate(size.width / 2, size.height / 2);
+    canvas.translate(offset.dx, offset.dy);
     canvas.rotate(_angleWithAlignment);
     _drawText(canvas, _angleMultiplier, _heightOffset);
     canvas.restore();

@@ -76,7 +76,8 @@ class _Painter extends CustomPainter {
   final ArcTextPainter _painter;
 
   @override
-  void paint(Canvas canvas, Size size) => _painter.paint(canvas, size);
+  void paint(Canvas canvas, Size size) =>
+      _painter.paint(canvas, Offset(size.width / 2, size.height / 2));
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;

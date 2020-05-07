@@ -1,3 +1,6 @@
+## [0.3.0]
+* Change `ArcTextPainter::paint` method signature
+
 ## [0.2.0]
 * Hide parameters
 
