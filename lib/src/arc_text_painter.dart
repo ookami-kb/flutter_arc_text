@@ -73,10 +73,10 @@ class ArcTextPainter {
   /// is drawn.
   double getFinalAngle() {
     double finalRotation = 0;
-    for (int i = 0; i < _text.length; i++) {
-      final translation = _getTranslation(_text[i]);
+    _text.runes.forEach((charCode) {
+      final translation = _getTranslation(String.fromCharCode(charCode));
       finalRotation += translation.alpha;
-    }
+    });
     return finalRotation;
   }
 
@@ -93,13 +93,13 @@ class ArcTextPainter {
   }
 
   void _drawText(Canvas canvas, int angleMultiplier, double heightOffset) {
-    for (int i = 0; i < _text.length; i++) {
-      final translation = _getTranslation(_text[i]);
+    _text.runes.forEach((charCode) {
+      final translation = _getTranslation(String.fromCharCode(charCode));
       final halfAngleOffset = translation.alpha / 2 * angleMultiplier;
       canvas.rotate(halfAngleOffset);
       _textPainter.paint(canvas, Offset(-translation.d / 2, heightOffset));
       canvas.rotate(halfAngleOffset);
-    }
+    });
   }
 
   /// Calculates width and central angle for the provided [letter].
