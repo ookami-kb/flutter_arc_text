@@ -9,10 +9,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.2
+  storybook_flutter: ^0.1.0
   flutter_arc_text:
     path: ../
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter:
+  uses-material-design: true
