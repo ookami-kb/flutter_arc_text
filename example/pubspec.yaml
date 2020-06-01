@@ -9,7 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  storybook_flutter: ^0.1.0
+  storybook_flutter: ^0.1.1
   flutter_arc_text:
     path: ../
 

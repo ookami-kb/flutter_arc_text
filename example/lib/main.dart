@@ -14,10 +14,9 @@ class MyApp extends StatelessWidget {
             name: 'Arc text',
             builder: (_, k) {
               final radius =
-                  double.tryParse(k.text('Radius', initial: '100')) ?? 100;
-              final startAngleText = k.text('Start angle', initial: '0');
+                  k.slider('Radius', initial: 100, max: 200, min: 50);
               final startAngle =
-                  (double.tryParse(startAngleText) ?? 0) * pi / 180;
+                  k.slider('Start angle', initial: 0, max: 360) * pi / 180;
               final text = k.text(
                 'Text',
                 initial: 'Hello, Flutter! I am ArcText widget. '

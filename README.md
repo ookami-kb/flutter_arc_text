@@ -2,7 +2,7 @@
 
 # Flutter Arc Text
 
-Renders text along the arc.
+Renders text along the arc. See [demo](https://ookami-kb.github.io/flutter_arc_text/).
 
 ![](screenshot_sm.png)
 
