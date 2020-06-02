@@ -56,8 +56,7 @@ class ArcTextPainter {
     }
 
     if (stretchAngle != null && _text.runes.length > 1) {
-      _interLetterAngle =
-          (stretchAngle - finalAngle) / (_text.runes.length - 1);
+      _interLetterAngle = (stretchAngle - finalAngle) / _text.runes.length;
     }
   }
 
