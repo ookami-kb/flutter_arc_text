@@ -22,7 +22,7 @@ class ArcTextPainter {
         assert(initialAngle != null, 'initialAngle should not be null'),
         assert(direction != null, 'direction should not be null'),
         assert(placement != null, 'placement should not be null'),
-        assert(!(stretchAngle != null && interLetterAngle != null),
+        assert(stretchAngle == null || interLetterAngle == null,
             'stretchAngle and interLetterAngle should not be both not null'),
         this._text = text,
         this._textStyle = textStyle {
