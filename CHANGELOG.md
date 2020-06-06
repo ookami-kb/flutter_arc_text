@@ -1,3 +1,6 @@
+## [0.3.1]
+* Added `stretchAngle` and `interLetterAngle` parameters
+
 ## [0.3.0]
 * Change `ArcTextPainter::paint` method signature
 
