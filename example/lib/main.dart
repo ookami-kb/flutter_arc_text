@@ -17,6 +17,8 @@ class MyApp extends StatelessWidget {
                   k.slider('Radius', initial: 100, max: 200, min: 50);
               final startAngle =
                   k.slider('Start angle', initial: 0, max: 360) * pi / 180;
+              final stretchAngle =
+                  k.slider('Stretch angle', initial: 0, max: 360) * pi / 180;
               final text = k.text(
                 'Text',
                 initial: 'Hello, Flutter! I am ArcText widget. '
@@ -49,6 +51,7 @@ class MyApp extends StatelessWidget {
                   direction: k.boolean('Clockwise', initial: true)
                       ? Direction.clockwise
                       : Direction.counterClockwise,
+                  stretchAngle: stretchAngle == 0 ? null : stretchAngle,
                 ),
               );
             },

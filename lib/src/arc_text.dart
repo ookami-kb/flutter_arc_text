@@ -13,6 +13,8 @@ class ArcText extends StatelessWidget {
     this.startAngleAlignment = StartAngleAlignment.start,
     this.direction = Direction.clockwise,
     this.placement = Placement.outside,
+    this.stretchAngle,
+    this.interLetterAngle,
   }) : super(key: key);
 
   /// Radius of the arc along which the text will be drawn.
@@ -26,6 +28,16 @@ class ArcText extends StatelessWidget {
 
   /// Initial angle (0 is top center, positive angle is clockwise).
   final double startAngle;
+
+  /// Angle of the arc to fit text into by adjusting inter-letter space.
+  ///
+  /// At least one of [stretchAngle] and [interLetterAngle] should be null.
+  final double stretchAngle;
+
+  /// Inter-letter spacing set by angle.
+  ///
+  /// At least one of [stretchAngle] and [interLetterAngle] should be null.
+  final double interLetterAngle;
 
   /// Text alignment around [startAngle].
   ///
@@ -50,6 +62,8 @@ class ArcText extends StatelessWidget {
           initialAngle: startAngle,
           direction: direction,
           placement: placement,
+          stretchAngle: stretchAngle,
+          interLetterAngle: interLetterAngle,
         ),
       );
 }
@@ -63,6 +77,8 @@ class _Painter extends CustomPainter {
     @required double initialAngle,
     @required Direction direction,
     @required Placement placement,
+    double stretchAngle,
+    double interLetterAngle,
   }) : _painter = ArcTextPainter(
           radius: radius,
           text: text,
@@ -71,6 +87,8 @@ class _Painter extends CustomPainter {
           initialAngle: initialAngle,
           direction: direction,
           placement: placement,
+          stretchAngle: stretchAngle,
+          interLetterAngle: interLetterAngle,
         );
 
   final ArcTextPainter _painter;
