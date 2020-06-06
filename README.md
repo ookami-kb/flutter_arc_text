@@ -4,6 +4,8 @@
 
 Renders text along the arc. See [demo](https://ookami-kb.github.io/flutter_arc_text/).
 
+The story behind the plugin is [here](https://developers.mews.com/flutter-how-to-draw-text-along-arc/).
+
 ![](screenshot_sm.png)
 
 ## Basic usage
