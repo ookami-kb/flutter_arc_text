@@ -8,7 +8,7 @@ class ArcTextPainter {
   ArcTextPainter({
     @required num radius,
     @required String text,
-    @required textStyle,
+    @required TextStyle textStyle,
     StartAngleAlignment alignment = StartAngleAlignment.start,
     double initialAngle = 0,
     Direction direction = Direction.clockwise,
@@ -24,17 +24,18 @@ class ArcTextPainter {
         assert(placement != null, 'placement should not be null'),
         assert(stretchAngle == null || interLetterAngle == null,
             'stretchAngle and interLetterAngle should not be both not null'),
-        this._text = text,
-        this._textStyle = textStyle {
-    _textPainter.text = TextSpan(text: _text, style: textStyle);
-    _textPainter.layout(minWidth: 0, maxWidth: double.maxFinite);
+        _text = text,
+        _textStyle = textStyle {
+    _textPainter
+      ..text = TextSpan(text: _text, style: textStyle)
+      ..layout(minWidth: 0, maxWidth: double.maxFinite);
 
     switch (placement) {
       case Placement.inside:
-        this._radius = radius - _textPainter.height;
+        _radius = radius - _textPainter.height;
         break;
       case Placement.outside:
-        this._radius = radius;
+        _radius = radius;
         break;
     }
 
@@ -42,18 +43,18 @@ class ArcTextPainter {
     final double finalAngle = getFinalAngle();
     final double alignmentOffset = _getAlignmentOffset(
       alignment,
-      stretchAngle != null ? stretchAngle : finalAngle,
+      stretchAngle ?? finalAngle,
     );
     switch (direction) {
       case Direction.clockwise:
         _angleWithAlignment = initialAngle + alignmentOffset;
         _angleMultiplier = 1;
-        _heightOffset = -this._radius - _textPainter.height;
+        _heightOffset = -_radius.toDouble() - _textPainter.height;
         break;
       case Direction.counterClockwise:
         _angleWithAlignment = initialAngle - alignmentOffset + math.pi;
         _angleMultiplier = -1;
-        _heightOffset = this._radius;
+        _heightOffset = _radius.toDouble();
         break;
     }
 
@@ -76,9 +77,10 @@ class ArcTextPainter {
   ///
   /// Center of the arc will be in [offset] position.
   void paint(Canvas canvas, [Offset offset = Offset.zero]) {
-    canvas.save();
-    canvas.translate(offset.dx, offset.dy);
-    canvas.rotate(_angleWithAlignment);
+    canvas
+      ..save()
+      ..translate(offset.dx, offset.dy)
+      ..rotate(_angleWithAlignment);
     _drawText(canvas, _angleMultiplier, _heightOffset);
     canvas.restore();
   }
@@ -111,27 +113,28 @@ class ArcTextPainter {
       final translation = _getTranslation(String.fromCharCode(charCode));
       final halfAngleOffset = translation.alpha / 2 * angleMultiplier;
       canvas.rotate(halfAngleOffset);
-      _textPainter.paint(canvas, Offset(-translation.d / 2, heightOffset));
+      _textPainter.paint(
+          canvas, Offset(-translation.letterWidth / 2, heightOffset));
       canvas.rotate(halfAngleOffset + _interLetterAngle * angleMultiplier);
     });
   }
 
   /// Calculates width and central angle for the provided [letter].
   LetterTranslation _getTranslation(String letter) {
-    _textPainter.text = TextSpan(text: letter, style: _textStyle);
-    _textPainter.layout(minWidth: 0, maxWidth: double.maxFinite);
+    _textPainter
+      ..text = TextSpan(text: letter, style: _textStyle)
+      ..layout(minWidth: 0, maxWidth: double.maxFinite);
 
-    return LetterTranslation.fromRadius(_textPainter.width, _radius);
+    return LetterTranslation.fromRadius(_textPainter.width, _radius.toDouble());
   }
 }
 
 class LetterTranslation {
-  LetterTranslation(this.d, this.alpha);
+  LetterTranslation(this.letterWidth, this.alpha);
 
-  LetterTranslation.fromRadius(double letterWidth, double radius)
-      : d = letterWidth,
-        alpha = 2 * math.asin(letterWidth / (2 * radius));
+  LetterTranslation.fromRadius(this.letterWidth, double radius)
+      : alpha = 2 * math.asin(letterWidth / (2 * radius));
 
-  final double d;
+  final double letterWidth;
   final double alpha;
 }
