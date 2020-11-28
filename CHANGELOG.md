@@ -1,3 +1,6 @@
+## [0.3.2]
+* Added Placement.middle option
+
 ## [0.3.1]
 * Added `stretchAngle` and `interLetterAngle` parameters
 

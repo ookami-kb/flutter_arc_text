@@ -37,6 +37,9 @@ class ArcTextPainter {
       case Placement.outside:
         _radius = radius;
         break;
+      case Placement.middle:
+        _radius = radius - _textPainter.height / 2;
+        break;
     }
 
     _interLetterAngle = interLetterAngle ?? 0;

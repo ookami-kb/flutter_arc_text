@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
           body: Story(
             name: 'Arc text',
             builder: (_, k) {
+              final displayCircle = k.boolean('Display circle', initial: true);
               final radius =
                   k.slider('Radius', initial: 100, max: 200, min: 50);
               final startAngle =
@@ -25,18 +26,20 @@ class MyApp extends StatelessWidget {
                     'I can draw circular text.',
               );
               final alignment = k.options('Alignment',
-                  options: [
+                  options: const [
                     Option('Start', StartAngleAlignment.start),
                     Option('Center', StartAngleAlignment.center),
                     Option('End', StartAngleAlignment.end),
                   ],
                   initial: StartAngleAlignment.start);
               return Container(
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(radius),
-                  color: Colors.white,
-                ),
+                decoration: displayCircle
+                    ? BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(radius),
+                        color: Colors.white,
+                      )
+                    : null,
                 width: radius * 2,
                 height: radius * 2,
                 child: ArcText(
@@ -45,9 +48,15 @@ class MyApp extends StatelessWidget {
                   textStyle: TextStyle(fontSize: 18, color: Colors.black),
                   startAngle: startAngle,
                   startAngleAlignment: alignment,
-                  placement: k.boolean('Outside', initial: true)
-                      ? Placement.outside
-                      : Placement.inside,
+                  placement: k.options(
+                    'Placement',
+                    options: const [
+                      Option('Outside', Placement.outside),
+                      Option('Inside', Placement.inside),
+                      Option('Middle', Placement.middle),
+                    ],
+                    initial: Placement.outside,
+                  ),
                   direction: k.boolean('Clockwise', initial: true)
                       ? Direction.clockwise
                       : Direction.counterClockwise,
