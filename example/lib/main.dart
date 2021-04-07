@@ -4,28 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_arc_text/flutter_arc_text.dart';
 import 'package:storybook_flutter/storybook_flutter.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        home: Scaffold(
-          body: Story(
+  Widget build(BuildContext context) => Storybook(
+        initialRoute: '/stories/arc-text',
+        children: [
+          Story(
             name: 'Arc text',
             builder: (_, k) {
-              final displayCircle = k.boolean('Display circle', initial: true);
+              final displayCircle = k.boolean(
+                label: 'Display circle',
+                initial: true,
+              );
               final radius =
-                  k.slider('Radius', initial: 100, max: 200, min: 50);
+                  k.slider(label: 'Radius', initial: 100, max: 200, min: 50);
               final startAngle =
-                  k.slider('Start angle', initial: 0, max: 360) * pi / 180;
+                  k.slider(label: 'Start angle', initial: 0, max: 360) *
+                      pi /
+                      180;
               final stretchAngle =
-                  k.slider('Stretch angle', initial: 0, max: 360) * pi / 180;
+                  k.slider(label: 'Stretch angle', initial: 0, max: 360) *
+                      pi /
+                      180;
               final text = k.text(
-                'Text',
+                label: 'Text',
                 initial: 'Hello, Flutter! I am ArcText widget. '
                     'I can draw circular text.',
               );
-              final alignment = k.options('Alignment',
+              final alignment = k.options(
+                  label: 'Alignment',
                   options: const [
                     Option('Start', StartAngleAlignment.start),
                     Option('Center', StartAngleAlignment.center),
@@ -45,11 +56,11 @@ class MyApp extends StatelessWidget {
                 child: ArcText(
                   radius: radius,
                   text: text,
-                  textStyle: TextStyle(fontSize: 18, color: Colors.black),
+                  textStyle: const TextStyle(fontSize: 18, color: Colors.black),
                   startAngle: startAngle,
                   startAngleAlignment: alignment,
                   placement: k.options(
-                    'Placement',
+                    label: 'Placement',
                     options: const [
                       Option('Outside', Placement.outside),
                       Option('Inside', Placement.inside),
@@ -57,14 +68,14 @@ class MyApp extends StatelessWidget {
                     ],
                     initial: Placement.outside,
                   ),
-                  direction: k.boolean('Clockwise', initial: true)
+                  direction: k.boolean(label: 'Clockwise', initial: true)
                       ? Direction.clockwise
                       : Direction.counterClockwise,
                   stretchAngle: stretchAngle == 0 ? null : stretchAngle,
                 ),
               );
             },
-          ),
-        ),
+          )
+        ],
       );
 }
