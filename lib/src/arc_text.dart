@@ -5,10 +5,10 @@ import 'package:flutter_arc_text/src/enums.dart';
 
 class ArcText extends StatelessWidget {
   const ArcText({
-    Key key,
-    @required this.radius,
-    @required this.text,
-    @required this.textStyle,
+    Key? key,
+    required this.radius,
+    required this.text,
+    required this.textStyle,
     this.startAngle = 0,
     this.startAngleAlignment = StartAngleAlignment.start,
     this.direction = Direction.clockwise,
@@ -32,12 +32,12 @@ class ArcText extends StatelessWidget {
   /// Angle of the arc to fit text into by adjusting inter-letter space.
   ///
   /// At least one of [stretchAngle] and [interLetterAngle] should be null.
-  final double stretchAngle;
+  final double? stretchAngle;
 
   /// Inter-letter spacing set by angle.
   ///
   /// At least one of [stretchAngle] and [interLetterAngle] should be null.
-  final double interLetterAngle;
+  final double? interLetterAngle;
 
   /// Text alignment around [startAngle].
   ///
@@ -70,15 +70,15 @@ class ArcText extends StatelessWidget {
 
 class _Painter extends CustomPainter {
   _Painter({
-    @required num radius,
-    @required String text,
-    @required TextStyle textStyle,
-    @required StartAngleAlignment alignment,
-    @required double initialAngle,
-    @required Direction direction,
-    @required Placement placement,
-    double stretchAngle,
-    double interLetterAngle,
+    required num radius,
+    required String text,
+    required TextStyle textStyle,
+    required StartAngleAlignment alignment,
+    required double initialAngle,
+    required Direction direction,
+    required Placement placement,
+    double? stretchAngle,
+    double? interLetterAngle,
   }) : _painter = ArcTextPainter(
           radius: radius,
           text: text,

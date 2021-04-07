@@ -1,30 +1,24 @@
 import 'dart:math' as math;
 
 import 'package:characters/characters.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_arc_text/src/enums.dart';
 
 class ArcTextPainter {
   ArcTextPainter({
-    @required num radius,
-    @required String text,
-    @required TextStyle textStyle,
+    required num radius,
+    required String text,
+    required TextStyle textStyle,
     StartAngleAlignment alignment = StartAngleAlignment.start,
     double initialAngle = 0,
     Direction direction = Direction.clockwise,
     Placement placement = Placement.outside,
-    double stretchAngle,
-    double interLetterAngle,
-  })  : assert(radius != null, 'radius should not be null'),
-        assert(text != null, 'text should not be null'),
-        assert(textStyle != null, 'textStyle should not be null'),
-        assert(alignment != null, 'alignment should not be null'),
-        assert(initialAngle != null, 'initialAngle should not be null'),
-        assert(direction != null, 'direction should not be null'),
-        assert(placement != null, 'placement should not be null'),
-        assert(stretchAngle == null || interLetterAngle == null,
-            'stretchAngle and interLetterAngle should not be both not null'),
+    double? stretchAngle,
+    double? interLetterAngle,
+  })  : assert(
+          stretchAngle == null || interLetterAngle == null,
+          'stretchAngle and interLetterAngle should not be both not null',
+        ),
         _text = text,
         _textStyle = textStyle {
     _textPainter
@@ -69,11 +63,11 @@ class ArcTextPainter {
 
   final String _text;
   final TextStyle _textStyle;
-  num _radius;
-  int _angleMultiplier;
-  double _heightOffset;
-  double _angleWithAlignment;
-  double _interLetterAngle;
+  late final num _radius;
+  late final int _angleMultiplier;
+  late final double _heightOffset;
+  late final double _angleWithAlignment;
+  late double _interLetterAngle;
 
   final _textPainter = TextPainter(textDirection: TextDirection.ltr);
 
@@ -109,7 +103,6 @@ class ArcTextPainter {
       case StartAngleAlignment.end:
         return -angle;
     }
-    throw ArgumentError('Unknown type: $alignment');
   }
 
   void _drawText(Canvas canvas, int angleMultiplier, double heightOffset) {
