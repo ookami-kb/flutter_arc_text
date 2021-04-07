@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/stories/arc-text',
         children: [
           Story(
+            background: Colors.white,
             name: 'Arc text',
             builder: (_, k) {
               final displayCircle = k.boolean(

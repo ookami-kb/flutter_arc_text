@@ -18704,9 +18704,11 @@ r=q}else r=new Q.iX(P.ad(H.a([a,b],t.De),!1,r),q)
 return r},
 iX:function iX(a,b){this.a=a
 this.$ti=b},
-bP:function bP(a,b,c){this.c=a
-this.e=b
-this.a=c},
+bP:function bP(a,b,c,d){var _=this
+_.c=a
+_.e=b
+_.r=c
+_.a=d},
 LU:function LU(a){this.a=null
 this.b=a
 this.c=null},
@@ -29600,7 +29602,7 @@ $iafT:1,
 gav:function(a){return this.b}}
 R.N2.prototype={}
 F.E_.prototype={
-I:function(a,b){var s=H.a([new Q.bP("Arc text",new F.UV(),null)],t.mk),r=$.ajx()
+I:function(a,b){var s=H.a([new Q.bP("Arc text",new F.UV(),C.i,null)],t.mk),r=$.ajx()
 return new L.GB(s,r,"/stories/arc-text",null)}}
 F.UV.prototype={
 $2:function(a,b){var s,r,q,p,o=null,n=t.y,m=b.jC(new E.rT("Display circle",!0),n),l=t.i,k=b.jC(new G.pT(200,50,"Radius",100),l),j=b.jC(new G.pT(360,0,"Start angle",0),l),i=b.jC(new G.pT(360,0,"Stretch angle",0),l)*3.141592653589793/180
@@ -57324,7 +57326,7 @@ h=H.bf(i==null?H.aY(m):i)
 q=m.LP(b,l,q,j.a.h(0,h))}return q}}
 Q.a75.prototype={
 $3:function(a,b,c){var s=null
-return M.cL(s,T.Pe(c,s,s),C.r,s,s,s,s,s,s,C.qh,s,s,s)},
+return M.cL(s,T.Pe(c,s,s),C.r,b.r,s,s,s,s,s,C.qh,s,s,s)},
 $S:397}
 N.Gz.prototype={
 I:function(a,b){return new A.oM(new N.a_t(),null)}}
