@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:characters/characters.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_arc_text/src/enums.dart';
@@ -61,8 +62,8 @@ class ArcTextPainter {
         break;
     }
 
-    if (stretchAngle != null && _text.runes.length > 1) {
-      _interLetterAngle = (stretchAngle - finalAngle) / _text.runes.length;
+    if (stretchAngle != null && _text.characters.length > 1) {
+      _interLetterAngle = (stretchAngle - finalAngle) / _text.characters.length;
     }
   }
 
@@ -92,8 +93,8 @@ class ArcTextPainter {
   /// is drawn.
   double getFinalAngle() {
     double finalRotation = 0;
-    _text.runes.forEach((charCode) {
-      final translation = _getTranslation(String.fromCharCode(charCode));
+    _text.characters.forEach((graphemeCluster) {
+      final translation = _getTranslation(graphemeCluster);
       finalRotation += translation.alpha + _interLetterAngle;
     });
     return finalRotation - _interLetterAngle;
@@ -112,8 +113,8 @@ class ArcTextPainter {
   }
 
   void _drawText(Canvas canvas, int angleMultiplier, double heightOffset) {
-    _text.runes.forEach((charCode) {
-      final translation = _getTranslation(String.fromCharCode(charCode));
+    _text.characters.forEach((graphemeCluster) {
+      final translation = _getTranslation(graphemeCluster);
       final halfAngleOffset = translation.alpha / 2 * angleMultiplier;
       canvas.rotate(halfAngleOffset);
       _textPainter.paint(

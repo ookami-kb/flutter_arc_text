@@ -10,6 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  characters: ^1.0.0
+
 dev_dependencies:
   mews_pedantic: ^0.1.1
   flutter_test:
