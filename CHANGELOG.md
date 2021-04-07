@@ -1,3 +1,12 @@
+## 0.4.1
+
+ - **FEAT**: Improve emoji support (#13).
+ - **CI**: Set up CI.
+ - **CHORE**: Update dependencies.
+ - **BUILD**: Update demo.
+ - **BUILD**: Update demo.
+ - **BUILD**: Update demo.
+
 ## 0.4.0
 * :cop: Migrate to null safety
 
