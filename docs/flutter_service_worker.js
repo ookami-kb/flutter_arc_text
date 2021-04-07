@@ -4,16 +4,17 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
   "version.json": "4b6db237b3514a88107a422469adfb0f",
-"index.html": "6c8aba8069d8cd7747544ce5ff244ede",
-"/": "6c8aba8069d8cd7747544ce5ff244ede",
-"main.dart.js": "01fca7b377042fb633452b3da8714fab",
+"index.html": "18728c0e034c284c94084e56eeaffbdd",
+"/": "18728c0e034c284c94084e56eeaffbdd",
+"main.dart.js": "5f9bc52043b97ae5f6adfc7c71dd1f4d",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "manifest.json": "15f73b7e8a8209c2206210b3ac8dea1b",
-"assets/AssetManifest.json": "99914b932bd37a50b983c5e7c90ae93b",
+"assets/AssetManifest.json": "0204befa48b84f73a1f680476bc3ff31",
 "assets/NOTICES": "dba0dd1fd05e26c83b8bf0b7072b7ed4",
 "assets/FontManifest.json": "7b2a36307916a9721811788013e65289",
+"assets/packages/storybook_flutter/assets/README.md": "fbaed1ae60d80596d99545ef45d72803",
 "assets/fonts/MaterialIcons-Regular.otf": "1288c9e28052e028aba623321f7826ac"
 };
 
