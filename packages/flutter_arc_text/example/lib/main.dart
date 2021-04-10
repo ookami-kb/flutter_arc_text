@@ -9,6 +9,25 @@ void main() => runApp(const MyApp());
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  CustomDecorationPainter _drawArc(bool clockwise) =>
+      (Canvas canvas, Rect rect, double finalAngle) {
+        final length = 2 * pi - finalAngle;
+        if (length < 0) return;
+
+        final startAngle =
+            clockwise ? finalAngle - pi / 2 : finalAngle + length + pi / 2;
+
+        const distance = 0.05;
+
+        final paint = Paint()
+          ..color = Colors.black
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.0;
+
+        canvas.drawArc(
+            rect, startAngle + distance, length - distance * 2, false, paint);
+      };
+
   @override
   Widget build(BuildContext context) => Storybook(
         initialRoute: '/stories/arc-text',
@@ -44,6 +63,8 @@ class MyApp extends StatelessWidget {
                     Option('End', StartAngleAlignment.end),
                   ],
                   initial: StartAngleAlignment.start);
+              final clockwise = k.boolean(label: 'Clockwise', initial: true);
+
               return Container(
                 decoration: displayCircle
                     ? BoxDecoration(
@@ -69,10 +90,14 @@ class MyApp extends StatelessWidget {
                     ],
                     initial: Placement.outside,
                   ),
-                  direction: k.boolean(label: 'Clockwise', initial: true)
+                  direction: clockwise
                       ? Direction.clockwise
                       : Direction.counterClockwise,
                   stretchAngle: stretchAngle == 0 ? null : stretchAngle,
+                  customDecoration:
+                      k.boolean(label: 'Draw arc between text ends')
+                          ? _drawArc(clockwise)
+                          : null,
                 ),
               );
             },
