@@ -4,6 +4,16 @@ import 'package:characters/characters.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_arc_text/src/enums.dart';
 
+/// Custom paint method
+/// [canvas] is the drawing canvas
+/// [rect] is the rectangle defined by the radius provided to ArcText
+/// [finalAngle] is the end of the painted text
+typedef CustomDecorationPainter = void Function(
+  Canvas canvas,
+  Rect rect,
+  double finalAngle,
+);
+
 class ArcTextPainter {
   ArcTextPainter({
     required num radius,
@@ -15,6 +25,7 @@ class ArcTextPainter {
     Placement placement = Placement.outside,
     double? stretchAngle,
     double? interLetterAngle,
+    this.customDecoration,
   })  : assert(
           stretchAngle == null || interLetterAngle == null,
           'stretchAngle and interLetterAngle should not be both not null',
@@ -59,6 +70,8 @@ class ArcTextPainter {
     if (stretchAngle != null && _text.characters.length > 1) {
       _interLetterAngle = (stretchAngle - finalAngle) / _text.characters.length;
     }
+
+    _circleRadius = radius.toDouble();
   }
 
   final String _text;
@@ -68,6 +81,9 @@ class ArcTextPainter {
   late final double _heightOffset;
   late final double _angleWithAlignment;
   late double _interLetterAngle;
+
+  late final double _circleRadius;
+  final CustomDecorationPainter? customDecoration;
 
   final _textPainter = TextPainter(textDirection: TextDirection.ltr);
 
@@ -79,6 +95,13 @@ class ArcTextPainter {
       ..save()
       ..translate(offset.dx, offset.dy)
       ..rotate(_angleWithAlignment);
+
+    customDecoration?.call(
+      canvas,
+      Rect.fromCircle(center: Offset.zero, radius: _circleRadius),
+      getFinalAngle(),
+    );
+
     _drawText(canvas, _angleMultiplier, _heightOffset);
     canvas.restore();
   }

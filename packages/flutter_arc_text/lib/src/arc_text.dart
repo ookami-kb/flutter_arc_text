@@ -15,6 +15,7 @@ class ArcText extends StatelessWidget {
     this.placement = Placement.outside,
     this.stretchAngle,
     this.interLetterAngle,
+    this.customDecoration,
   }) : super(key: key);
 
   /// Radius of the arc along which the text will be drawn.
@@ -52,6 +53,9 @@ class ArcText extends StatelessWidget {
   /// Text placement relative to circle with the same [radius].
   final Placement placement;
 
+  /// Custom painting (e.g. arc), will be called within the paint method 
+  final CustomDecorationPainter? customDecoration;
+
   @override
   Widget build(BuildContext context) => CustomPaint(
         painter: _Painter(
@@ -64,6 +68,7 @@ class ArcText extends StatelessWidget {
           placement: placement,
           stretchAngle: stretchAngle,
           interLetterAngle: interLetterAngle,
+          customDecoration: customDecoration,
         ),
       );
 }
@@ -79,6 +84,7 @@ class _Painter extends CustomPainter {
     required Placement placement,
     double? stretchAngle,
     double? interLetterAngle,
+    CustomDecorationPainter? customDecoration,
   }) : _painter = ArcTextPainter(
           radius: radius,
           text: text,
@@ -89,6 +95,7 @@ class _Painter extends CustomPainter {
           placement: placement,
           stretchAngle: stretchAngle,
           interLetterAngle: interLetterAngle,
+          customDecoration: customDecoration,
         );
 
   final ArcTextPainter _painter;
