@@ -15,7 +15,7 @@ class ArcText extends StatelessWidget {
     this.placement = Placement.outside,
     this.stretchAngle,
     this.interLetterAngle,
-    this.paint = _defaultPaint,
+    this.painterDelegate = _defaultPaint,
   }) : super(key: key);
 
   /// Radius of the arc along which the text will be drawn.
@@ -53,7 +53,43 @@ class ArcText extends StatelessWidget {
   /// Text placement relative to circle with the same [radius].
   final Placement placement;
 
-  final PainterDelegate paint;
+  /// Controls how the text will be rendered.
+  ///
+  /// By default, it just calls
+  ///
+  /// ```dart
+  /// painter.paint(canvas, size);
+  /// ```
+  ///
+  /// You can use this parameter, for example, to add decoration before or
+  /// after text is drawn. Consider the following delegate to draw background
+  /// behind the text:
+  ///
+  /// ```dart
+  /// final decorationPaint = Paint()
+  ///   ..style = PaintingStyle.stroke
+  ///   ..strokeCap = StrokeCap.round
+  ///   ..strokeWidth = 32
+  ///   ..color = Colors.yellow;
+  ///
+  /// void painterDelegate(Canvas canvas, Size size, ArcTextPainter painter) {
+  ///   final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+  ///   canvas.drawArc(
+  ///     rect,
+  ///     painter.startAngle - pi / 2,
+  ///     painter.sweepAngle,
+  ///     false,
+  ///     decorationPaint,
+  ///   );
+  ///   painter.paint(canvas, size);
+  /// }
+  /// ```
+  ///
+  /// For a more complex use case, take a look at the example package.
+  ///
+  /// Don't forget to call `painter.paint(canvas, size)` in your custom
+  /// delegate to draw the text itself.
+  final PainterDelegate painterDelegate;
 
   @override
   Widget build(BuildContext context) => CustomPaint(
@@ -67,7 +103,7 @@ class ArcText extends StatelessWidget {
           placement: placement,
           stretchAngle: stretchAngle,
           interLetterAngle: interLetterAngle,
-          paint: paint,
+          painterDelegate: painterDelegate,
         ),
       );
 }
@@ -83,8 +119,8 @@ class _Painter extends CustomPainter {
     required Placement placement,
     double? stretchAngle,
     double? interLetterAngle,
-    required PainterDelegate paint,
-  })   : _paint = paint,
+    required PainterDelegate painterDelegate,
+  })   : _painterDelegate = painterDelegate,
         _painter = ArcTextPainter(
           radius: radius,
           text: text,
@@ -98,15 +134,17 @@ class _Painter extends CustomPainter {
         );
 
   final ArcTextPainter _painter;
-  final PainterDelegate _paint;
+  final PainterDelegate _painterDelegate;
 
   @override
-  void paint(Canvas canvas, Size size) => _paint(canvas, size, _painter);
+  void paint(Canvas canvas, Size size) =>
+      _painterDelegate(canvas, size, _painter);
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
+/// Use this delegate to override how the text will be rendered.
 typedef PainterDelegate = void Function(
   Canvas canvas,
   Size size,

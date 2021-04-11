@@ -73,18 +73,20 @@ class ArcTextPainter {
 
   /// Call this method whenever the text needs to be repainted.
   ///
-  /// Center of the arc will be in the center rectangle of [size]
-  /// with top left in (0, 0).
-  void paint(Canvas canvas, Size size) {
-    final offset = Offset(size.width / 2, size.height / 2);
+  /// Center of the arc by default will be in the center rectangle of [size]
+  /// with top left in (0, 0). You can control it with [offset].
+  void paint(Canvas canvas, Size size, {Offset? offset}) {
+    final effectiveOffset = offset ?? Offset(size.width / 2, size.height / 2);
     canvas
       ..save()
-      ..translate(offset.dx, offset.dy)
+      ..translate(effectiveOffset.dx, effectiveOffset.dy)
       ..rotate(_angleWithAlignment);
     _drawText(canvas, _angleMultiplier, _heightOffset);
     canvas.restore();
   }
 
+  /// Returns start from which the text will be draw
+  /// (0 is top center, positive angle is clockwise).
   double get startAngle => _angleWithAlignment;
 
   /// Calculates the angle of the arc, along which the text is drawn.
@@ -97,6 +99,7 @@ class ArcTextPainter {
     return finalRotation - _interLetterAngle;
   }
 
+  /// Return final angle at which the text stops.
   double get finalAngle => startAngle + sweepAngle;
 
   double _getAlignmentOffset(StartAngleAlignment alignment, double angle) {

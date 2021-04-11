@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
                       ? Direction.clockwise
                       : Direction.counterClockwise,
                   stretchAngle: stretchAngle == 0 ? null : stretchAngle,
-                  paint: _makeDelegate(hasBackground, hasDecoration),
+                  painterDelegate: _makeDelegate(hasBackground, hasDecoration),
                 ),
               );
             },
