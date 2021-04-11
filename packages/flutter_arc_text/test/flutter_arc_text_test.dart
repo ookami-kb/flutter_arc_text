@@ -4,80 +4,53 @@ import 'package:flutter/material.dart';
 import 'package:flutter_arc_text/flutter_arc_text.dart';
 import 'package:flutter_arc_text/src/enums.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:vector_math/vector_math.dart' hide Colors;
 
 void main() {
-  testWidgets('Default', (tester) async {
-    await tester.pumpWidget(const App());
-    await expectLater(
-      find.byType(App),
-      matchesGoldenFile('golden/Default.png'),
-    );
-  });
+  testGoldens('Golden tests', (tester) async {
+    final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 1)
+      ..addScenario('Default', const App())
+      ..addScenario(
+        'StartAngleAlignment.end',
+        const App(alignment: StartAngleAlignment.end),
+      )
+      ..addScenario(
+        'Placement.inside',
+        const App(placement: Placement.inside),
+      )
+      ..addScenario(
+        'stretchAngle',
+        App(stretchAngle: radians(270)),
+      )
+      ..addScenario(
+        'interLetterAngle',
+        App(interLetterAngle: radians(5)),
+      )
+      ..addScenario(
+        'painterDelegate clockwise',
+        const App(
+          placement: Placement.middle,
+          alignment: StartAngleAlignment.center,
+          painterDelegate: _delegate,
+        ),
+      )
+      ..addScenario(
+        'painterDelegate counterclockwise',
+        App(
+          placement: Placement.middle,
+          alignment: StartAngleAlignment.center,
+          painterDelegate: _delegate,
+          direction: Direction.counterClockwise,
+          startAngle: radians(180),
+        ),
+      );
 
-  testWidgets('StartAngleAlignment.end', (tester) async {
-    await tester.pumpWidget(const App(
-      alignment: StartAngleAlignment.end,
-    ));
-    await expectLater(
-      find.byType(App),
-      matchesGoldenFile('golden/StartAngleAlignment.end.png'),
-    );
-  });
-
-  testWidgets('Placement.inside', (tester) async {
-    await tester.pumpWidget(const App(
-      placement: Placement.inside,
-    ));
-    await expectLater(
-      find.byType(App),
-      matchesGoldenFile('golden/Placement.inside.png'),
-    );
-  });
-
-  testWidgets('stretchAngle', (tester) async {
-    await tester.pumpWidget(App(
-      stretchAngle: radians(270),
-    ));
-    await expectLater(
-      find.byType(App),
-      matchesGoldenFile('golden/stretchAngle.png'),
-    );
-  });
-
-  testWidgets('interLetterAngle', (tester) async {
-    await tester.pumpWidget(App(
-      interLetterAngle: radians(10),
-    ));
-    await expectLater(
-      find.byType(App),
-      matchesGoldenFile('golden/interLetterAngle.png'),
-    );
-  });
-
-  testWidgets('painterDelegate clockwise', (tester) async {
-    await tester.pumpWidget(const App(
-      placement: Placement.middle,
-      alignment: StartAngleAlignment.center,
-      painterDelegate: _delegate,
-    ));
-    await expectLater(
-      find.byType(App),
-      matchesGoldenFile('golden/painterDelegate_clockwise.png'),
-    );
-  });
-
-  testWidgets('painterDelegate counterclockwise', (tester) async {
-    await tester.pumpWidget(App(
-      placement: Placement.middle,
-      alignment: StartAngleAlignment.center,
-      painterDelegate: _delegate,
-      direction: Direction.counterClockwise,
-      startAngle: radians(180),
-    ));
-    await expectLater(
-      find.byType(App),
-      matchesGoldenFile('golden/painterDelegate_counterclockwise.png'),
+    await tester.pumpWidgetBuilder(builder.build());
+    await screenMatchesGolden(
+      tester,
+      'flutter_arc_text',
+      autoHeight: true,
     );
   });
 }
@@ -109,9 +82,13 @@ class App extends StatelessWidget {
           width: 300,
           height: 300,
           child: ArcText(
-            text: 'Hello ArcText',
+            text: 'Hello, Golden Test for ArcText!',
             radius: 100,
-            textStyle: const TextStyle(fontSize: 14, color: Colors.black),
+            textStyle: const TextStyle(
+              fontSize: 14,
+              color: Colors.black,
+              fontFamily: 'Roboto',
+            ),
             startAngleAlignment: alignment,
             startAngle: startAngle,
             direction: direction,
