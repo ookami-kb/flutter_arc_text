@@ -85,7 +85,7 @@ class ArcTextPainter {
     canvas.restore();
   }
 
-  /// Returns start from which the text will be draw
+  /// Returns angle from which the text will be drawn
   /// (0 is top center, positive angle is clockwise).
   double get startAngle => _angleWithAlignment;
 
