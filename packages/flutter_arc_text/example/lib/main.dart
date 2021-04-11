@@ -77,31 +77,7 @@ class MyApp extends StatelessWidget {
                       ? Direction.clockwise
                       : Direction.counterClockwise,
                   stretchAngle: stretchAngle == 0 ? null : stretchAngle,
-                  paint: (canvas, size, painter) {
-                    final center = Offset(size.width / 2, size.height / 2);
-
-                    if (hasBackground) {
-                      canvas.drawArc(
-                        Rect.fromCircle(center: center, radius: radius),
-                        painter.startAngle - pi / 2,
-                        painter.sweepAngle,
-                        false,
-                        _decorationPaint,
-                      );
-                    }
-
-                    painter.paint(canvas, size);
-
-                    if (hasDecoration) {
-                      canvas.drawArc(
-                        Rect.fromCircle(center: center, radius: radius),
-                        painter.finalAngle - pi / 2 + radians(10),
-                        2 * pi - painter.sweepAngle - radians(20),
-                        false,
-                        _backgroundPaint,
-                      );
-                    }
-                  },
+                  paint: _makeDelegate(hasBackground, hasDecoration),
                 ),
               );
             },
@@ -120,3 +96,30 @@ final _decorationPaint = Paint()
   ..strokeCap = StrokeCap.round
   ..strokeWidth = 32
   ..color = Colors.yellow;
+
+PainterDelegate _makeDelegate(bool hasBackground, bool hasDecoration) =>
+    (canvas, size, painter) {
+      final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+
+      if (hasBackground) {
+        canvas.drawArc(
+          rect,
+          painter.startAngle - pi / 2,
+          painter.sweepAngle,
+          false,
+          _decorationPaint,
+        );
+      }
+
+      painter.paint(canvas, size);
+
+      if (hasDecoration) {
+        canvas.drawArc(
+          rect,
+          painter.finalAngle - pi / 2 + radians(10),
+          2 * pi - painter.sweepAngle - radians(20),
+          false,
+          _backgroundPaint,
+        );
+      }
+    };
