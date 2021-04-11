@@ -73,7 +73,10 @@ class ArcText extends StatelessWidget {
   ///   ..color = Colors.yellow;
   ///
   /// void painterDelegate(Canvas canvas, Size size, ArcTextPainter painter) {
-  ///   final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+  ///   final rect = Rect.fromCircle(
+  ///     center: Offset(size.width / 2, size.height / 2),
+  ///     radius: painter.radius,
+  ///   );
   ///   canvas.drawArc(
   ///     rect,
   ///     painter.startAngle,

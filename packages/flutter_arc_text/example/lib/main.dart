@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_arc_text/flutter_arc_text.dart';
@@ -99,7 +100,10 @@ final _decorationPaint = Paint()
 
 PainterDelegate _makeDelegate(bool hasBackground, bool hasDecoration) =>
     (canvas, size, painter) {
-      final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+      final rect = Rect.fromCircle(
+        center: Offset(size.width / 2, size.height / 2),
+        radius: painter.radius,
+      );
 
       if (hasBackground) {
         canvas.drawArc(

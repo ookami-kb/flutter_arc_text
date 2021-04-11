@@ -19,6 +19,7 @@ class ArcTextPainter {
           stretchAngle == null || interLetterAngle == null,
           'stretchAngle and interLetterAngle should not be both not null',
         ),
+        radius = radius.toDouble(),
         _text = text,
         _textStyle = textStyle {
     _textPainter
@@ -27,13 +28,13 @@ class ArcTextPainter {
 
     switch (placement) {
       case Placement.inside:
-        _radius = radius - _textPainter.height;
+        _effectiveRadius = this.radius - _textPainter.height;
         break;
       case Placement.outside:
-        _radius = radius;
+        _effectiveRadius = this.radius;
         break;
       case Placement.middle:
-        _radius = radius - _textPainter.height / 2;
+        _effectiveRadius = this.radius - _textPainter.height / 2;
         break;
     }
 
@@ -42,7 +43,7 @@ class ArcTextPainter {
                 _calculateSweepAngle(
                   _textPainter,
                   _textStyle,
-                  _radius.toDouble(),
+                  _effectiveRadius,
                   _text,
                   0,
                 )) /
@@ -55,24 +56,25 @@ class ArcTextPainter {
       case Direction.clockwise:
         _angleWithAlignment = initialAngle + alignmentOffset;
         _angleMultiplier = 1;
-        _heightOffset = -_radius.toDouble() - _textPainter.height;
+        _heightOffset = -_effectiveRadius - _textPainter.height;
         break;
       case Direction.counterClockwise:
         _angleWithAlignment = initialAngle - alignmentOffset + math.pi;
         _angleMultiplier = -1;
-        _heightOffset = _radius.toDouble();
+        _heightOffset = _effectiveRadius;
         break;
     }
   }
 
   final String _text;
   final TextStyle _textStyle;
-  late final num _radius;
+  late final double _effectiveRadius;
   late final int _angleMultiplier;
   late final double _heightOffset;
   late final double _angleWithAlignment;
   late final double _interLetterAngle;
   final Direction direction;
+  final double radius;
 
   final _textPainter = TextPainter(textDirection: TextDirection.ltr);
 
@@ -115,7 +117,7 @@ class ArcTextPainter {
   late final double sweepAngle = _calculateSweepAngle(
     _textPainter,
     _textStyle,
-    _radius.toDouble(),
+    _effectiveRadius,
     _text,
     _interLetterAngle,
   );
@@ -128,7 +130,7 @@ class ArcTextPainter {
       final translation = _getTranslation(
         _textPainter,
         _textStyle,
-        _radius.toDouble(),
+        _effectiveRadius,
         graphemeCluster,
       );
       final halfAngleOffset = translation.alpha / 2 * angleMultiplier;
@@ -163,7 +165,7 @@ double _calculateSweepAngle(
     final translation = _getTranslation(
       painter,
       style,
-      radius.toDouble(),
+      radius,
       graphemeCluster,
     );
     finalRotation += translation.alpha + interLetterAngle;
