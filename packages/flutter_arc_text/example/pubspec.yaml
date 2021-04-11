@@ -12,6 +12,7 @@ dependencies:
   flutter_arc_text:
     path: ../
   storybook_flutter: ^0.5.0
+  vector_math: ^2.1.0
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_arc_text/flutter_arc_text.dart';
 import 'package:storybook_flutter/storybook_flutter.dart';
+import 'package:vector_math/vector_math.dart' hide Colors;
 
 void main() => runApp(const MyApp());
 
@@ -44,6 +46,9 @@ class MyApp extends StatelessWidget {
                     Option('End', StartAngleAlignment.end),
                   ],
                   initial: StartAngleAlignment.start);
+              final hasBackground = k.boolean(label: 'Background');
+              final hasDecoration = k.boolean(label: 'Decoration');
+
               return Container(
                 decoration: displayCircle
                     ? BoxDecoration(
@@ -73,6 +78,7 @@ class MyApp extends StatelessWidget {
                       ? Direction.clockwise
                       : Direction.counterClockwise,
                   stretchAngle: stretchAngle == 0 ? null : stretchAngle,
+                  painterDelegate: _makeDelegate(hasBackground, hasDecoration),
                 ),
               );
             },
@@ -80,3 +86,44 @@ class MyApp extends StatelessWidget {
         ],
       );
 }
+
+final _backgroundPaint = Paint()
+  ..style = PaintingStyle.stroke
+  ..strokeWidth = 2
+  ..color = Colors.black;
+
+final _decorationPaint = Paint()
+  ..style = PaintingStyle.stroke
+  ..strokeCap = StrokeCap.round
+  ..strokeWidth = 32
+  ..color = Colors.yellow;
+
+PainterDelegate _makeDelegate(bool hasBackground, bool hasDecoration) =>
+    (canvas, size, painter) {
+      final rect = Rect.fromCircle(
+        center: Offset(size.width / 2, size.height / 2),
+        radius: painter.radius,
+      );
+
+      if (hasBackground) {
+        canvas.drawArc(
+          rect,
+          painter.startAngle,
+          painter.sweepAngle,
+          false,
+          _decorationPaint,
+        );
+      }
+
+      painter.paint(canvas, size);
+
+      if (hasDecoration) {
+        canvas.drawArc(
+          rect,
+          painter.finalAngle + radians(10),
+          2 * pi - painter.sweepAngle - radians(20),
+          false,
+          _backgroundPaint,
+        );
+      }
+    };
