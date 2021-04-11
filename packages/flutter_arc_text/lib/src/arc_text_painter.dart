@@ -38,7 +38,7 @@ class ArcTextPainter {
     }
 
     _interLetterAngle = interLetterAngle ?? 0;
-    final double finalAngle = getFinalAngle();
+    final double finalAngle = sweepAngle;
     final double alignmentOffset = _getAlignmentOffset(
       alignment,
       stretchAngle ?? finalAngle,
@@ -73,8 +73,10 @@ class ArcTextPainter {
 
   /// Call this method whenever the text needs to be repainted.
   ///
-  /// Center of the arc will be in [offset] position.
-  void paint(Canvas canvas, [Offset offset = Offset.zero]) {
+  /// Center of the arc will be in the center rectangle of [size]
+  /// with top left in (0, 0).
+  void paint(Canvas canvas, Size size) {
+    final offset = Offset(size.width / 2, size.height / 2);
     canvas
       ..save()
       ..translate(offset.dx, offset.dy)
@@ -83,9 +85,10 @@ class ArcTextPainter {
     canvas.restore();
   }
 
-  /// Calculates final angle the canvas will be rotated after all the text
-  /// is drawn.
-  double getFinalAngle() {
+  double get startAngle => _angleWithAlignment;
+
+  /// Calculates the angle of the arc, along which the text is drawn.
+  double get sweepAngle {
     double finalRotation = 0;
     _text.characters.forEach((graphemeCluster) {
       final translation = _getTranslation(graphemeCluster);
@@ -93,6 +96,8 @@ class ArcTextPainter {
     });
     return finalRotation - _interLetterAngle;
   }
+
+  double get finalAngle => startAngle + sweepAngle;
 
   double _getAlignmentOffset(StartAngleAlignment alignment, double angle) {
     switch (alignment) {

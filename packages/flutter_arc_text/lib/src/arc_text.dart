@@ -15,6 +15,7 @@ class ArcText extends StatelessWidget {
     this.placement = Placement.outside,
     this.stretchAngle,
     this.interLetterAngle,
+    this.paint = _defaultPaint,
   }) : super(key: key);
 
   /// Radius of the arc along which the text will be drawn.
@@ -52,6 +53,8 @@ class ArcText extends StatelessWidget {
   /// Text placement relative to circle with the same [radius].
   final Placement placement;
 
+  final PainterDelegate paint;
+
   @override
   Widget build(BuildContext context) => CustomPaint(
         painter: _Painter(
@@ -64,6 +67,7 @@ class ArcText extends StatelessWidget {
           placement: placement,
           stretchAngle: stretchAngle,
           interLetterAngle: interLetterAngle,
+          paint: paint,
         ),
       );
 }
@@ -79,7 +83,9 @@ class _Painter extends CustomPainter {
     required Placement placement,
     double? stretchAngle,
     double? interLetterAngle,
-  }) : _painter = ArcTextPainter(
+    required PainterDelegate paint,
+  })   : _paint = paint,
+        _painter = ArcTextPainter(
           radius: radius,
           text: text,
           textStyle: textStyle,
@@ -92,11 +98,21 @@ class _Painter extends CustomPainter {
         );
 
   final ArcTextPainter _painter;
+  final PainterDelegate _paint;
 
   @override
-  void paint(Canvas canvas, Size size) =>
-      _painter.paint(canvas, Offset(size.width / 2, size.height / 2));
+  void paint(Canvas canvas, Size size) => _paint(canvas, size, _painter);
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
+typedef PainterDelegate = void Function(
+  Canvas canvas,
+  Size size,
+  ArcTextPainter painter,
+);
+
+void _defaultPaint(Canvas canvas, Size size, ArcTextPainter painter) {
+  painter.paint(canvas, size);
 }
