@@ -76,7 +76,7 @@ class ArcText extends StatelessWidget {
   ///   final rect = Rect.fromLTWH(0, 0, size.width, size.height);
   ///   canvas.drawArc(
   ///     rect,
-  ///     painter.startAngle - pi / 2,
+  ///     painter.startAngle,
   ///     painter.sweepAngle,
   ///     false,
   ///     decorationPaint,
