@@ -99,7 +99,7 @@ class ArcTextPainter {
     return finalRotation - _interLetterAngle;
   }
 
-  /// Return final angle at which the text stops.
+  /// Returns final angle at which the text stops.
   double get finalAngle => startAngle + sweepAngle;
 
   double _getAlignmentOffset(StartAngleAlignment alignment, double angle) {
