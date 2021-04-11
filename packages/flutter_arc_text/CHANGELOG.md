@@ -1,3 +1,10 @@
+## 0.5.0
+
+> Note: This release has breaking changes.
+
+ - **CHORE**: Update project structure.
+ - **BREAKING** **FEAT**: Add PainterDelegate (#17).
+
 ## 0.4.1
 
  - **FEAT**: Improve emoji support (#13).
