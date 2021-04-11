@@ -104,7 +104,7 @@ PainterDelegate _makeDelegate(bool hasBackground, bool hasDecoration) =>
       if (hasBackground) {
         canvas.drawArc(
           rect,
-          painter.startAngle - pi / 2,
+          painter.startAngle,
           painter.sweepAngle,
           false,
           _decorationPaint,
@@ -116,7 +116,7 @@ PainterDelegate _makeDelegate(bool hasBackground, bool hasDecoration) =>
       if (hasDecoration) {
         canvas.drawArc(
           rect,
-          painter.finalAngle - pi / 2 + radians(10),
+          painter.finalAngle + radians(10),
           2 * pi - painter.sweepAngle - radians(20),
           false,
           _backgroundPaint,
