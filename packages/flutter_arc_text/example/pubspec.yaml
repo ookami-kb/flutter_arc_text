@@ -11,13 +11,14 @@ dependencies:
     sdk: flutter
   flutter_arc_text:
     path: ../
-  storybook_flutter: ^0.5.0
-  vector_math: ^2.1.0
+  storybook_flutter: ^0.14.0
+  vector_math: ^2.1.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mews_pedantic: ^0.2.1
+  mews_pedantic: ^0.20.0
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
