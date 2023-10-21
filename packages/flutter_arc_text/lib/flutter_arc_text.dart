@@ -1,3 +1,4 @@
+/// Renders text along the arc.
 library flutter_arc_text;
 
 export 'src/arc_text.dart';

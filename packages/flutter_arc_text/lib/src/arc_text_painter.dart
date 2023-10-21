@@ -29,13 +29,10 @@ class ArcTextPainter {
     switch (placement) {
       case Placement.inside:
         _effectiveRadius = this.radius - _textPainter.height;
-        break;
       case Placement.outside:
         _effectiveRadius = this.radius;
-        break;
       case Placement.middle:
         _effectiveRadius = this.radius - _textPainter.height / 2;
-        break;
     }
 
     _interLetterAngle = (stretchAngle != null && _text.characters.length > 1)
@@ -57,12 +54,10 @@ class ArcTextPainter {
         _angleWithAlignment = initialAngle + alignmentOffset;
         _angleMultiplier = 1;
         _heightOffset = -_effectiveRadius - _textPainter.height;
-        break;
       case Direction.counterClockwise:
         _angleWithAlignment = initialAngle - alignmentOffset + math.pi;
         _angleMultiplier = -1;
         _heightOffset = _effectiveRadius;
-        break;
     }
   }
 
@@ -126,7 +121,7 @@ class ArcTextPainter {
   double get finalAngle => startAngle + sweepAngle;
 
   void _drawText(Canvas canvas, int angleMultiplier, double heightOffset) {
-    _text.characters.forEach((graphemeCluster) {
+    for (final graphemeCluster in _text.characters) {
       final translation = _getTranslation(
         _textPainter,
         _textStyle,
@@ -136,9 +131,11 @@ class ArcTextPainter {
       final halfAngleOffset = translation.alpha / 2 * angleMultiplier;
       canvas.rotate(halfAngleOffset);
       _textPainter.paint(
-          canvas, Offset(-translation.letterWidth / 2, heightOffset));
+        canvas,
+        Offset(-translation.letterWidth / 2, heightOffset),
+      );
       canvas.rotate(halfAngleOffset + _interLetterAngle * angleMultiplier);
-    });
+    }
   }
 }
 
@@ -161,7 +158,7 @@ double _calculateSweepAngle(
   double interLetterAngle,
 ) {
   double finalRotation = 0;
-  text.characters.forEach((graphemeCluster) {
+  for (final graphemeCluster in text.characters) {
     final translation = _getTranslation(
       painter,
       style,
@@ -169,7 +166,7 @@ double _calculateSweepAngle(
       graphemeCluster,
     );
     finalRotation += translation.alpha + interLetterAngle;
-  });
+  }
   return finalRotation - interLetterAngle;
 }
 

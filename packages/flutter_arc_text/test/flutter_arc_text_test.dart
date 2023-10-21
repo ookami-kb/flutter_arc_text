@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_arc_text/flutter_arc_text.dart';
-import 'package:flutter_arc_text/src/enums.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:vector_math/vector_math.dart' hide Colors;
 
@@ -57,7 +55,7 @@ void main() {
 
 class App extends StatelessWidget {
   const App({
-    Key? key,
+    super.key,
     this.startAngle = 0,
     this.alignment = StartAngleAlignment.start,
     this.direction = Direction.clockwise,
@@ -65,7 +63,7 @@ class App extends StatelessWidget {
     this.stretchAngle,
     this.interLetterAngle,
     this.painterDelegate,
-  }) : super(key: key);
+  });
 
   final double startAngle;
   final StartAngleAlignment alignment;
