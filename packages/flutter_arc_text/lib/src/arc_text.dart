@@ -97,12 +97,10 @@ class ArcText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
-    TextStyle? effectiveTextStyle = textStyle;
-    if (textStyle == null || textStyle!.inherit) {
-      effectiveTextStyle = defaultTextStyle.style.merge(textStyle);
-    }
+    TextStyle effectiveTextStyle = defaultTextStyle.style.merge(textStyle);
+
     if (MediaQuery.boldTextOf(context)) {
-      effectiveTextStyle = effectiveTextStyle!
+      effectiveTextStyle = effectiveTextStyle
           .merge(const TextStyle(fontWeight: FontWeight.bold));
     }
 
