@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_arc_text/flutter_arc_text.dart';
@@ -13,41 +12,47 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Storybook(
-        initialRoute: '/stories/arc-text',
-        children: [
+        initialStory: 'Arc text',
+        stories: [
           Story(
-            background: Colors.white,
             name: 'Arc text',
-            builder: (_, k) {
-              final displayCircle = k.boolean(
+            builder: (context) {
+              final displayCircle = context.knobs.boolean(
                 label: 'Display circle',
                 initial: true,
               );
-              final radius =
-                  k.slider(label: 'Radius', initial: 100, max: 200, min: 50);
-              final startAngle =
-                  k.slider(label: 'Start angle', initial: 0, max: 360) *
-                      pi /
-                      180;
-              final stretchAngle =
-                  k.slider(label: 'Stretch angle', initial: 0, max: 360) *
-                      pi /
-                      180;
-              final text = k.text(
+              final radius = context.knobs
+                  .slider(label: 'Radius', initial: 100, max: 200, min: 50);
+              final startAngle = context.knobs
+                      .slider(label: 'Start angle', initial: 0, max: 360) *
+                  pi /
+                  180;
+              final stretchAngle = context.knobs
+                      .slider(label: 'Stretch angle', initial: 0, max: 360) *
+                  pi /
+                  180;
+              final text = context.knobs.text(
                 label: 'Text',
                 initial: 'Hello, Flutter! I am ArcText widget. '
                     'I can draw circular text.',
               );
-              final alignment = k.options(
-                  label: 'Alignment',
-                  options: const [
-                    Option('Start', StartAngleAlignment.start),
-                    Option('Center', StartAngleAlignment.center),
-                    Option('End', StartAngleAlignment.end),
-                  ],
-                  initial: StartAngleAlignment.start);
-              final hasBackground = k.boolean(label: 'Background');
-              final hasDecoration = k.boolean(label: 'Decoration');
+              final alignment = context.knobs.options(
+                label: 'Alignment',
+                options: const [
+                  Option(
+                    label: 'Start',
+                    value: StartAngleAlignment.start,
+                  ),
+                  Option(
+                    label: 'Center',
+                    value: StartAngleAlignment.center,
+                  ),
+                  Option(label: 'End', value: StartAngleAlignment.end),
+                ],
+                initial: StartAngleAlignment.start,
+              );
+              final hasBackground = context.knobs.boolean(label: 'Background');
+              final hasDecoration = context.knobs.boolean(label: 'Decoration');
 
               return Container(
                 decoration: displayCircle
@@ -65,24 +70,25 @@ class MyApp extends StatelessWidget {
                   textStyle: const TextStyle(fontSize: 18, color: Colors.black),
                   startAngle: startAngle,
                   startAngleAlignment: alignment,
-                  placement: k.options(
+                  placement: context.knobs.options(
                     label: 'Placement',
                     options: const [
-                      Option('Outside', Placement.outside),
-                      Option('Inside', Placement.inside),
-                      Option('Middle', Placement.middle),
+                      Option(label: 'Outside', value: Placement.outside),
+                      Option(label: 'Inside', value: Placement.inside),
+                      Option(label: 'Middle', value: Placement.middle),
                     ],
                     initial: Placement.outside,
                   ),
-                  direction: k.boolean(label: 'Clockwise', initial: true)
-                      ? Direction.clockwise
-                      : Direction.counterClockwise,
+                  direction:
+                      context.knobs.boolean(label: 'Clockwise', initial: true)
+                          ? Direction.clockwise
+                          : Direction.counterClockwise,
                   stretchAngle: stretchAngle == 0 ? null : stretchAngle,
                   painterDelegate: _makeDelegate(hasBackground, hasDecoration),
                 ),
               );
             },
-          )
+          ),
         ],
       );
 }

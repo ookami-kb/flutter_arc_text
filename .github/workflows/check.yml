@@ -4,15 +4,26 @@ on:
     branches:
       - master
 
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "3.13.8"
+
       - run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
       - run: dart pub global activate melos
+
       - run: melos run check_master
+
       - name: Store failure artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2

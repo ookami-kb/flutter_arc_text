@@ -5,7 +5,7 @@ import 'package:flutter_arc_text/src/enums.dart';
 
 class ArcText extends StatelessWidget {
   const ArcText({
-    Key? key,
+    super.key,
     required this.radius,
     required this.text,
     required this.textStyle,
@@ -16,7 +16,7 @@ class ArcText extends StatelessWidget {
     this.stretchAngle,
     this.interLetterAngle,
     this.painterDelegate = _defaultPaint,
-  }) : super(key: key);
+  });
 
   /// Radius of the arc along which the text will be drawn.
   final double radius;
@@ -123,7 +123,7 @@ class _Painter extends CustomPainter {
     double? stretchAngle,
     double? interLetterAngle,
     required PainterDelegate painterDelegate,
-  })   : _painterDelegate = painterDelegate,
+  })  : _painterDelegate = painterDelegate,
         _painter = ArcTextPainter(
           radius: radius,
           text: text,
