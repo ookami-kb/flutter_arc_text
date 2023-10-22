@@ -1,17 +1,17 @@
 name: flutter_arc_text
 
 packages:
-  - 'packages/**'
+  - "packages/**"
 
 scripts:
-  format: flutter format --set-exit-if-changed -n .
+  format: dart format --set-exit-if-changed --output=none .
   pub_get: melos exec -- "flutter pub get"
   analyze: flutter analyze .
 
   test:
     run: melos exec -c 1 --fail-fast -- "flutter test --no-pub"
-    select-package:
-      dir-exists:
+    packageFilters:
+      dirExists:
         - test
 
   check_master:
