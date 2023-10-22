@@ -167,6 +167,7 @@ double _calculateSweepAngle(
     );
     finalRotation += translation.alpha + interLetterAngle;
   }
+
   return finalRotation - interLetterAngle;
 }
 
@@ -185,7 +186,7 @@ LetterTranslation _getTranslation(
 }
 
 class LetterTranslation {
-  LetterTranslation(this.letterWidth, this.alpha);
+  const LetterTranslation(this.letterWidth, this.alpha);
 
   LetterTranslation.fromRadius(this.letterWidth, double radius)
       : alpha = 2 * math.asin(letterWidth / (2 * radius));

@@ -15,9 +15,7 @@ class MyApp extends StatelessWidget {
         initialStory: 'Arc text',
         stories: [
           Story(
-            // TODO background: Colors.white,
             name: 'Arc text',
-
             builder: (context) {
               final displayCircle = context.knobs.boolean(
                 label: 'Display circle',
