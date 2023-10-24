@@ -3,6 +3,10 @@ name: flutter_arc_text
 packages:
   - "packages/**"
 
+command:
+  version:
+    workspaceChangelog: false
+
 scripts:
   format: dart format --set-exit-if-changed --output=none .
   pub_get: melos exec -- "flutter pub get"
