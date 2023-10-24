@@ -1,3 +1,10 @@
+## 0.6.0
+
+> Note: This release has breaking changes.
+
+ - **FEAT**: Make TextStyle parameter optional (#25).
+ - **BREAKING** **REFACTOR**: Migrate to Flutter 3.13 (#24).
+
 ## 0.5.0
 
 > Note: This release has breaking changes.
