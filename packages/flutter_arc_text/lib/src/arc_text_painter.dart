@@ -8,7 +8,7 @@ class ArcTextPainter {
   ArcTextPainter({
     required num radius,
     required String text,
-    required TextStyle textStyle,
+    TextStyle? textStyle,
     StartAngleAlignment alignment = StartAngleAlignment.start,
     double initialAngle = 0,
     this.direction = Direction.clockwise,
@@ -62,7 +62,7 @@ class ArcTextPainter {
   }
 
   final String _text;
-  final TextStyle _textStyle;
+  final TextStyle? _textStyle;
   late final double _effectiveRadius;
   late final int _angleMultiplier;
   late final double _heightOffset;
@@ -152,7 +152,7 @@ double _getAlignmentOffset(StartAngleAlignment alignment, double angle) {
 
 double _calculateSweepAngle(
   TextPainter painter,
-  TextStyle style,
+  TextStyle? style,
   double radius,
   String text,
   double interLetterAngle,
@@ -174,7 +174,7 @@ double _calculateSweepAngle(
 /// Calculates width and central angle for the provided [letter].
 LetterTranslation _getTranslation(
   TextPainter painter,
-  TextStyle style,
+  TextStyle? style,
   double radius,
   String letter,
 ) {

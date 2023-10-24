@@ -8,7 +8,7 @@ class ArcText extends StatelessWidget {
     super.key,
     required this.radius,
     required this.text,
-    required this.textStyle,
+    this.textStyle,
     this.startAngle = 0,
     this.startAngleAlignment = StartAngleAlignment.start,
     this.direction = Direction.clockwise,
@@ -25,7 +25,7 @@ class ArcText extends StatelessWidget {
   final String text;
 
   /// TextStyle that will be applied to the text.
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   /// Initial angle (0 is top center, positive angle is clockwise).
   final double startAngle;
@@ -95,27 +95,37 @@ class ArcText extends StatelessWidget {
   final PainterDelegate painterDelegate;
 
   @override
-  Widget build(BuildContext context) => CustomPaint(
-        painter: _Painter(
-          radius: radius,
-          text: text,
-          textStyle: textStyle,
-          alignment: startAngleAlignment,
-          initialAngle: startAngle,
-          direction: direction,
-          placement: placement,
-          stretchAngle: stretchAngle,
-          interLetterAngle: interLetterAngle,
-          painterDelegate: painterDelegate,
-        ),
-      );
+  Widget build(BuildContext context) {
+    final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
+    TextStyle effectiveTextStyle = defaultTextStyle.style.merge(textStyle);
+
+    if (MediaQuery.boldTextOf(context)) {
+      effectiveTextStyle = effectiveTextStyle
+          .merge(const TextStyle(fontWeight: FontWeight.bold));
+    }
+
+    return CustomPaint(
+      painter: _Painter(
+        radius: radius,
+        text: text,
+        textStyle: effectiveTextStyle,
+        alignment: startAngleAlignment,
+        initialAngle: startAngle,
+        direction: direction,
+        placement: placement,
+        stretchAngle: stretchAngle,
+        interLetterAngle: interLetterAngle,
+        painterDelegate: painterDelegate,
+      ),
+    );
+  }
 }
 
 class _Painter extends CustomPainter {
   _Painter({
     required num radius,
     required String text,
-    required TextStyle textStyle,
+    TextStyle? textStyle,
     required StartAngleAlignment alignment,
     required double initialAngle,
     required Direction direction,
